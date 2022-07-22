@@ -28,11 +28,7 @@ func main() {
 	api := router.Group("/api/v1")
 
 	api.POST("/users", userHandler.RegisterUser)
+	api.POST("/sessions", userHandler.Login)
 
 	router.Run()
-	// input dari user
-	// handler : melakukan mapping input dari user ke struct input
-	// service : melakukan mapping dari struct input ke struct User 
-	// repository save struct User ke db
-	// db
 }
