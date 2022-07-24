@@ -3,6 +3,7 @@ package shoppingcart
 type Service interface {
 	GetShoppingCarts(userID int) ([]ShoppingCart, error)
 	CreateShoppingCart(input CreateShoppingCartInput, userID int) (ShoppingCart, error)
+	DeleteShoppingCart(input GetShoppingCartDetailInput) error
 }
 
 type service struct {
@@ -33,4 +34,13 @@ func (s *service) CreateShoppingCart(input CreateShoppingCartInput, userID int) 
 	}
 
 	return newShoppingCart, nil
+}
+
+func (s *service) DeleteShoppingCart(input GetShoppingCartDetailInput) error {
+	err := s.repository.Remove(input.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

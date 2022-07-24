@@ -50,6 +50,7 @@ func main() {
 
 	api.GET("/shoppingCarts", authMiddleware(authService, userService), shoppingCartHandler.GetShoppingCarts)
 	api.POST("/shoppingCarts", authMiddleware(authService, userService), shoppingCartHandler.CreateShoppingCart)
+	api.DELETE("/shoppingCarts", authMiddleware(authService, userService), shoppingCartHandler.DeleteShoppingCarts)
 
 	router.Run()
 }

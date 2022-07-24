@@ -1,9 +1,10 @@
 package shoppingcart
 
 type ShoppingCartFormatter struct {
-	ID        int `json:"id"`
-	UserID    int `json:"user_id"`
-	ProductID int `json:"product_id"`
+	ID        int    `json:"id"`
+	UserID    int    `json:"user_id"`
+	ProductID int    `json:"product_id"`
+	Name      string `json:"name"`
 }
 
 func FormatShoppingCart(shoppingCart ShoppingCart, userID int) ShoppingCartFormatter {
@@ -11,6 +12,7 @@ func FormatShoppingCart(shoppingCart ShoppingCart, userID int) ShoppingCartForma
 	ShoppingCartFormatter.ID = shoppingCart.ID
 	ShoppingCartFormatter.UserID = userID
 	ShoppingCartFormatter.ProductID = shoppingCart.ProductID
+	ShoppingCartFormatter.Name = shoppingCart.Product.Name
 
 	return ShoppingCartFormatter
 }
