@@ -7,6 +7,7 @@ import (
 	"onlinestore/handler"
 	"onlinestore/helper"
 	"onlinestore/product"
+	shoppingcart "onlinestore/shoppingCart"
 	"onlinestore/user"
 	"strings"
 
@@ -26,14 +27,16 @@ func main() {
 
 	userRepository := user.NewRepository(db)
 	productRepository := product.NewRepository(db)
+	shoppingCartRepository := shoppingcart.NewRepository(db)
 
 	userService := user.NewService(userRepository)
 	productService := product.NewService(productRepository)
+	shoppingCartService := shoppingcart.NewService(shoppingCartRepository)
 	authService := auth.NewService()
 
 	userHandler := handler.NewUserHandler(userService, authService)
 	productHandler := handler.NewProductHandler(productService)
-
+	shoppingCartHandler := handler.NewShoppingCartHandler(shoppingCartService)
 	router := gin.Default()
 
 	api := router.Group("/api/v1")
@@ -44,6 +47,8 @@ func main() {
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
 
 	api.GET("/products", productHandler.GetProducts)
+
+	api.POST("/shoppingCarts", authMiddleware(authService, userService), shoppingCartHandler.CreateShoppingCart)
 
 	router.Run()
 }
