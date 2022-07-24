@@ -1,4 +1,4 @@
-module bwastartup
+module onlinestore
 
 go 1.18
 

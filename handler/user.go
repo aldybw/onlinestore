@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"bwastartup/auth"
-	"bwastartup/helper"
-	"bwastartup/user"
 	"fmt"
 	"net/http"
+	"onlinestore/auth"
+	"onlinestore/helper"
+	"onlinestore/user"
 
 	"github.com/gin-gonic/gin"
 )

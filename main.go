@@ -1,13 +1,12 @@
 package main
 
 import (
-	"bwastartup/auth"
-	"bwastartup/campaign"
-	"bwastartup/handler"
-	"bwastartup/helper"
-	"bwastartup/user"
 	"log"
 	"net/http"
+	"onlinestore/auth"
+	"onlinestore/handler"
+	"onlinestore/helper"
+	"onlinestore/user"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +16,7 @@ import (
 )
 
 func main() {
-	dsn := "root:@tcp(127.0.0.1:3306)/bwastartup?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:@tcp(127.0.0.1:3306)/onlinestore?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
@@ -25,14 +24,11 @@ func main() {
 	}
 
 	userRepository := user.NewRepository(db)
-	campaignRepository := campaign.NewRepository(db)
 
 	userService := user.NewService(userRepository)
-	campaignService := campaign.NewService(campaignRepository)
 	authService := auth.NewService()
 
 	userHandler := handler.NewUserHandler(userService, authService)
-	campaignHandler := handler.NewCampaignHandler(campaignService)
 
 	router := gin.Default()
 
@@ -42,8 +38,6 @@ func main() {
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
-
-	api.GET("/campaigns", campaignHandler.GetCampaigns)
 
 	router.Run()
 }
