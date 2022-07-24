@@ -48,6 +48,7 @@ func main() {
 
 	api.GET("/products", productHandler.GetProducts)
 
+	api.GET("/shoppingCarts", authMiddleware(authService, userService), shoppingCartHandler.GetShoppingCarts)
 	api.POST("/shoppingCarts", authMiddleware(authService, userService), shoppingCartHandler.CreateShoppingCart)
 
 	router.Run()

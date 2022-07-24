@@ -1,6 +1,7 @@
 package shoppingcart
 
 type Service interface {
+	GetShoppingCarts(userID int) ([]ShoppingCart, error)
 	CreateShoppingCart(input CreateShoppingCartInput, userID int) (ShoppingCart, error)
 }
 
@@ -10,6 +11,15 @@ type service struct {
 
 func NewService(repository Repository) *service {
 	return &service{repository}
+}
+
+func (s *service) GetShoppingCarts(userID int) ([]ShoppingCart, error) {
+	shoppingCart, err := s.repository.FindByUserID(userID)
+	if err != nil {
+		return shoppingCart, err
+	}
+
+	return shoppingCart, nil
 }
 
 func (s *service) CreateShoppingCart(input CreateShoppingCartInput, userID int) (ShoppingCart, error) {

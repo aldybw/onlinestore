@@ -14,3 +14,14 @@ func FormatShoppingCart(shoppingCart ShoppingCart, userID int) ShoppingCartForma
 
 	return ShoppingCartFormatter
 }
+
+func FormatShoppingCarts(shoppingCarts []ShoppingCart, userID int) []ShoppingCartFormatter {
+	shoppingCartsFormatter := []ShoppingCartFormatter{}
+
+	for _, shoppingCart := range shoppingCarts {
+		ShoppingCartFormatter := FormatShoppingCart(shoppingCart, userID)
+		shoppingCartsFormatter = append(shoppingCartsFormatter, ShoppingCartFormatter)
+	}
+
+	return shoppingCartsFormatter
+}

@@ -17,6 +17,22 @@ func NewShoppingCartHandler(service shoppingcart.Service) *shoppingCartHandler {
 	return &shoppingCartHandler{service}
 }
 
+func (h *shoppingCartHandler) GetShoppingCarts(c *gin.Context) {
+	currentUser := c.MustGet("currentUser").(user.User)
+
+	userID := currentUser.ID
+
+	shoppingCarts, err := h.service.GetShoppingCarts(userID)
+	if err != nil {
+		response := helper.APIResponse("Error to get shopping carts", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	
+	response := helper.APIResponse("List of shopping carts", http.StatusOK, "success", shoppingcart.FormatShoppingCarts(shoppingCarts, userID))
+	c.JSON(http.StatusOK, response)
+}
+
 func (h *shoppingCartHandler) CreateShoppingCart(c *gin.Context) {
 	var input shoppingcart.CreateShoppingCartInput
 
