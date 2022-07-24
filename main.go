@@ -6,6 +6,7 @@ import (
 	"onlinestore/auth"
 	"onlinestore/handler"
 	"onlinestore/helper"
+	"onlinestore/product"
 	"onlinestore/user"
 	"strings"
 
@@ -24,11 +25,14 @@ func main() {
 	}
 
 	userRepository := user.NewRepository(db)
+	productRepository := product.NewRepository(db)
 
 	userService := user.NewService(userRepository)
+	productService := product.NewService(productRepository)
 	authService := auth.NewService()
 
 	userHandler := handler.NewUserHandler(userService, authService)
+	productHandler := handler.NewProductHandler(productService)
 
 	router := gin.Default()
 
@@ -38,6 +42,8 @@ func main() {
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
+
+	api.GET("/products", productHandler.GetProducts)
 
 	router.Run()
 }
